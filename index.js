@@ -51,7 +51,6 @@ app.post('/sendMail', async (req, res) => {
         }
     );
 
-    console.log(info)
 
     res.status(200).send(
         { 
