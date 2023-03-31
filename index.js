@@ -23,20 +23,19 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 app.post('/sendMail', async (req, res) => {
-    console.log(req.body);
-    let { companyLogoUrl, appLink, subject, to } = req.body;
 
-    if (!to || !Array.isArray) {
-        res.sendStatus(400)
-        return
-    }
+    // 1. Co link
+    const link = 'https://drive.google.com/drive/folders/1bQ7PUCN5_w27KTad2DjeWjWKBO5whtsg';
+    // 2. Danh sach email => Lay tu database;
+    const emailList = ['nodaja6316@dogemn.com'];
+
+
 
     // Email Template
     let html = await ejs.renderFile(
         './views/basic.ejs', 
         {
-            companyLogoUrl,
-            appLink,
+            link 
         },
     );
 
@@ -45,8 +44,8 @@ app.post('/sendMail', async (req, res) => {
     let info = await transporter.sendMail(
         {
             from: 'Kunj Kanani',
-            to: to.join(','),
-            subject: subject,
+            to: emailList,
+            subject: 'subject',
             html: html,
         }
     );
@@ -54,9 +53,7 @@ app.post('/sendMail', async (req, res) => {
 
     res.status(200).send(
         { 
-            "message": "success", 
-            "data": { subject, companyLogoUrl, appLink, to }, 
-            "msgId": info.messageId 
+            "message": "success"
         },
     );
 });
